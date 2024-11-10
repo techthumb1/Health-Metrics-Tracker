@@ -1,0 +1,7 @@
+<!-- templates/log_metrics.html -->
+<form method="POST" action="{{ url_for('main.log_metrics') }}">
+    <input type="number" name="heart_rate" placeholder="Heart Rate" required>
+    <input type="text" name="blood_pressure" placeholder="Blood Pressure" required>
+    <input type="number" name="weight" placeholder="Weight" required>
+    <button type="submit">Log Metrics</button>
+</form>
