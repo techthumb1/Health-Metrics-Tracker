@@ -49,10 +49,10 @@
 
 | Metrics             | Status                                                                                           |
 |---------------------|--------------------------------------------------------------------------------------------------|
-| Build Status        | ![Build Status](https://img.shields.io/github/actions/workflow/status/techthumb1/health-metrics-tracker/ci.yml) |
-| Last Commit         | ![Last Commit](https://img.shields.io/github/last-commit/techthumb1/health-metrics-tracker)      |
-| Open Issues         | ![Issues](https://img.shields.io/github/issues/techthumb1/health-metrics-tracker)                |
-| License             | ![License](https://img.shields.io/github/license/tecthumb1/health-metrics-tracker)              |
+| Build Status        | ![Build Status](https://img.shields.io/github/actions/workflow/status/techthumb1/Health-Metrics-Tracker/ci.yml) |
+| Last Commit         | ![Last Commit](https://img.shields.io/github/last-commit/techthumb1/Health-Metrics-Tracker/ci.yml)      |
+| Open Issues         | ![Issues](https://img.shields.io/github/issues/techthumb1/Health-Metrics-Tracker/ci.yml)                |
+| License             | ![License](https://img.shields.io/github/license/techthumb1/Health-Metrics-Tracker/ci.yml)              |
 
 
 ---
