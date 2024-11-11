@@ -2,7 +2,7 @@
 
 **Health Metrics Tracker** is a Flask-based web application that allows users to log, track, and visualize health metrics such as heart rate, blood pressure, and weight. Users can create accounts, log their health data, and view trends over time, helping them monitor and manage their wellness.
 
-![Health Metrics Tracker Banner](./app/static/banner.png) <!-- Replace with an actual banner image path -->
+![Health Metrics Tracker Banner](app/static/Health-Metrics-Tracker.png) <!-- Replace with an actual banner image path -->
 
 ## Table of Contents
 
@@ -39,19 +39,21 @@
 | Bootstrap           | CSS framework for responsive styling              |
 | Alembic             | Database migration tool                           |
 | dotenv              | For environment variable management               |
+| Docker              | Containerization for deployment                   |
+| QuickChart          | API for generating dynamic charts                 |
+| GitHub Actions      | CI/CD for automating data updates                 |
 
 ---
 
-## Dynamic Badges
+## Project Metrics
 
 | Metrics             | Status                                                                                           |
 |---------------------|--------------------------------------------------------------------------------------------------|
-| Build Status        | ![Build Status](https://img.shields.io/github/actions/workflow/status/yourusername/yourrepo/ci.yml) |
-| Last Commit         | ![Last Commit](https://img.shields.io/github/last-commit/yourusername/health-metrics-tracker)      |
-| Open Issues         | ![Issues](https://img.shields.io/github/issues/yourusername/health-metrics-tracker)                |
-| License             | ![License](https://img.shields.io/github/license/yourusername/health-metrics-tracker)              |
+| Build Status        | ![Build Status](https://img.shields.io/github/actions/workflow/status/techthumb1/health-metrics-tracker/ci.yml) |
+| Last Commit         | ![Last Commit](https://img.shields.io/github/last-commit/techthumb1/health-metrics-tracker)      |
+| Open Issues         | ![Issues](https://img.shields.io/github/issues/techthumb1/health-metrics-tracker)                |
+| License             | ![License](https://img.shields.io/github/license/tecthumb1/health-metrics-tracker)              |
 
-Replace `yourusername` and `yourrepo` with your GitHub username and repository name. These badges dynamically update to reflect the current status.
 
 ---
 
@@ -69,30 +71,38 @@ You can modify the data by replacing the labels and `data` values with actual me
 
 ### Prerequisites
 
-- **Python 3.8+**
+- **Python 3.10.14+**
 - **PostgreSQL** installed and running
 
 ### Steps
 
 1. **Clone the Repository**:
+
    ```bash
    git clone https://github.com/yourusername/health-metrics-tracker.git
    cd health-metrics-tracker
+
 ---
 2. **Set Up Virtual Environment**:
+
     ```bash
     python -m venv venv
     source venv/bin/activate # On Windows, use `venv\Scripts\activate`
     ```
+
 ---
 3. **Install Dependencies**:
+
     ```bash
     pip install -r requirements.txt
     ```
+
 ---
 4. **Set Up Database**:
+
 - Create a PostgreSQL database and user.
 - Update `.env` file with your database credentials:
+
     ``` Plain Text
     SECRET_KEY=your_secret_key
     DB_USER=your_db_user
@@ -101,16 +111,21 @@ You can modify the data by replacing the labels and `data` values with actual me
     DB_PORT=5432
     DB_NAME=health_metrics_db
     ```
-    ---
+
+---
 5. **Run Database Migrations**:
+
     ```bash
     flask db upgrade
     ```
-    ---
+
+---
 6. **Start the Application**:
+
     ```bash
     flask run
     ```
+
 ---
 ### Usage
 
