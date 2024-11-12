@@ -61,7 +61,7 @@
 
 This chart shows an example of real-time heart rate trends, updated via QuickChart:
 
-![Dynamic Heart Rate Chart](https://quickchart.io/chart?c=%7B%22type%22%3A%22line%22%2C%22data%22%3A%7B%22labels%22%3A%5B%22Day%201%22%2C%22Day%202%22%2C%22Day%203%22%5D%2C%22datasets%22%3A%5B%7B%22label%22%3A%22Heart%20Rate%22%2C%22data%22%3A%5B80%2C85%2C90%5D%7D%5D%7D%7D)
+![Dynamic Heart Rate Chart](https://quickchart.io/chart?c=%7B%27type%27%3A%20%27line%27%2C%20%27data%27%3A%20%7B%27labels%27%3A%20%5B%27Day%201%27%2C%20%27Day%202%27%2C%20%27Day%203%27%5D%2C%20%27datasets%27%3A%20%5B%7B%27label%27%3A%20%27Heart%20Rate%27%2C%20%27data%27%3A%20%5B80%2C%2085%2C%2090%5D%7D%5D%7D%7D)
 
 You can modify the data by replacing the labels and `data` values with actual metrics.
 

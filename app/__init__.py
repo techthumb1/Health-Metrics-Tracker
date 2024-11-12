@@ -3,6 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from datetime import datetime
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -30,5 +31,9 @@ def create_app():
         @login_manager.user_loader
         def load_user(user_id):
             return User.query.get(int(user_id))
+        
+    @app.context_processor  # Register the context processor
+    def inject_year():
+        return {'current_year': datetime.now().year}
 
     return app

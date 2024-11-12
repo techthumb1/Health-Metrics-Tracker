@@ -1,9 +1,60 @@
-<!-- templates/dashboard.html -->
 {% extends "base.html" %}
 
 {% block title %}Dashboard - Health Metrics Tracker{% endblock %}
 
 {% block content %}
-<h2>Welcome, {{ current_user.username }}</h2>
-<p>Here is your dashboard content...</p>
+<h2 class="text-center mb-4">My Health Metrics</h2>
+<div class="text-center">
+    <canvas id="metricsChart" width="400" height="200"></canvas>
+</div>
+
+<script>
+    const labels = {{ metrics_dates|tojson }};
+    const heartRateData = {{ heart_rates|tojson }};
+    const bloodPressureData = {{ blood_pressures|tojson }};
+    const weightData = {{ weights|tojson }};
+
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Heart Rate',
+                data: heartRateData,
+                borderColor: 'rgb(255, 99, 132)',
+                fill: false,
+            },
+            {
+                label: 'Blood Pressure',
+                data: bloodPressureData,
+                borderColor: 'rgb(54, 162, 235)',
+                fill: false,
+            },
+            {
+                label: 'Weight',
+                data: weightData,
+                borderColor: 'rgb(75, 192, 192)',
+                fill: false,
+            }
+        ]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Health Metrics Over Time'
+                }
+            }
+        }
+    };
+
+    new Chart(document.getElementById('metricsChart'), config);
+</script>
 {% endblock %}

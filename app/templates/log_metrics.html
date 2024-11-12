@@ -1,7 +1,28 @@
-<!-- templates/log_metrics.html -->
-<form method="POST" action="{{ url_for('main.log_metrics') }}">
-    <input type="number" name="heart_rate" placeholder="Heart Rate" required>
-    <input type="text" name="blood_pressure" placeholder="Blood Pressure" required>
-    <input type="number" name="weight" placeholder="Weight" required>
-    <button type="submit">Log Metrics</button>
+{% extends "base.html" %}
+
+{% block title %}Log Metrics - Health Metrics Tracker{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-4">Log Your Health Metrics</h2>
+<form method="POST" action="{{ url_for('main.log_metrics') }}" class="mx-auto" style="max-width: 400px;">
+    <div class="mb-3">
+        <label for="heart_rate" class="form-label">Heart Rate</label>
+        <input type="number" name="heart_rate" id="heart_rate" class="form-control" placeholder="BPM" required>
+    </div>
+    <div class="mb-3">
+        <label for="blood_pressure" class="form-label">Blood Pressure</label>
+        <input type="text" name="blood_pressure" id="blood_pressure" class="form-control" placeholder="e.g., 120/80" required>
+    </div>
+    <div class="mb-3">
+        <label for="weight" class="form-label">Weight</label>
+        <div class="input-group">
+            <input type="number" name="weight" id="weight" class="form-control" placeholder="Weight" required>
+            <select name="weight_unit" id="weight_unit" class="form-select">
+                <option value="lbs" selected>Pounds (lbs)</option>
+                <option value="kg">Kilograms (kg)</option>
+            </select>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success w-100">Log Metrics</button>
 </form>
+{% endblock %}
