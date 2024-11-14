@@ -1,0 +1,5 @@
+console.log('Labels:', labels);
+console.log('Heart Rate Data:', heartRateData);
+console.log('Systolic Data:', systolicData);
+console.log('Diastolic Data:', diastolicData);
+console.log('Weight Data:', weightData);
