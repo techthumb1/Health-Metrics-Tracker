@@ -3,6 +3,16 @@
 {% block title %}Contact - Health Metrics Tracker{% endblock %}
 
 {% block content %}
-<h2>Contact Us</h2>
-<p>If you have any questions or feedback, feel free to reach out.</p>
+<h2 class="text-center mb-4">Contact Us</h2>
+
+<!-- Ensure the variables are defined before iterating -->
+{% if metrics_dates is defined and heart_rates is defined and blood_pressures is defined and weights is defined %}
+    <ul>
+    {% for date, hr, bp, wt in zip(metrics_dates, heart_rates, blood_pressures, weights) %}
+        <li>{{ date }} - Heart Rate: {{ hr }}, Blood Pressure: {{ bp }}, Weight: {{ wt }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No health metric data available to display.</p>
+{% endif %}
 {% endblock %}

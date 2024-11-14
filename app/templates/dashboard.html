@@ -4,57 +4,97 @@
 
 {% block content %}
 <h2 class="text-center mb-4">My Health Metrics</h2>
+
+<div class="text-center mb-3">
+    <div class="btn-group">
+        <button onclick="filterData('week')" class="btn btn-outline-primary">Last Week</button>
+        <button onclick="filterData('month')" class="btn btn-outline-primary">Last Month</button>
+        <button onclick="filterData('all')" class="btn btn-outline-primary">All Time</button>
+        <button onclick="toggleChartType()" class="btn btn-outline-secondary">Toggle Chart Type</button>
+    </div>
+</div>
+
+<!-- Chart Canvas -->
 <div class="text-center">
     <canvas id="metricsChart" width="400" height="200"></canvas>
 </div>
 
 <script>
-    const labels = {{ metrics_dates|tojson }};
-    const heartRateData = {{ heart_rates|tojson }};
-    const bloodPressureData = {{ blood_pressures|tojson }};
-    const weightData = {{ weights|tojson }};
+    // Load data from Flask as JSON strings and parse into JavaScript objects
+    const labels = JSON.parse('{{ metrics_dates | tojson | safe }}');
+    const heartRateData = JSON.parse('{{ heart_rates | tojson | safe }}');
+    const systolicData = JSON.parse('{{ systolic_data | tojson | safe }}');
+    const diastolicData = JSON.parse('{{ diastolic_data | tojson | safe }}');
+    const weightData = JSON.parse('{{ weights | tojson | safe }}');
 
+    console.log('Labels:', labels);
+    console.log('Heart Rate Data:', heartRateData);
+    console.log('Systolic Data:', systolicData);
+    console.log('Diastolic Data:', diastolicData);
+    console.log('Weight Data:', weightData);
+
+    // Configure chart data and settings
     const data = {
         labels: labels,
         datasets: [
             {
                 label: 'Heart Rate',
                 data: heartRateData,
-                borderColor: 'rgb(255, 99, 132)',
-                fill: false,
+                borderColor: 'rgba(255, 99, 132, 0.8)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                fill: true
             },
             {
-                label: 'Blood Pressure',
-                data: bloodPressureData,
-                borderColor: 'rgb(54, 162, 235)',
-                fill: false,
+                label: 'Systolic Pressure',
+                data: systolicData,
+                borderColor: 'rgba(54, 162, 235, 0.8)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                fill: true
+            },
+            {
+                label: 'Diastolic Pressure',
+                data: diastolicData,
+                borderColor: 'rgba(75, 0, 130, 0.8)',
+                backgroundColor: 'rgba(75, 0, 130, 0.2)',
+                fill: true
             },
             {
                 label: 'Weight',
                 data: weightData,
-                borderColor: 'rgb(75, 192, 192)',
-                fill: false,
+                borderColor: 'rgba(75, 192, 192, 0.8)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: true
             }
         ]
     };
 
+    // Chart configuration
     const config = {
         type: 'line',
         data: data,
         options: {
             responsive: true,
             plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Health Metrics Over Time'
-                }
+                legend: { position: 'top' },
+                title: { display: true, text: 'Health Metrics Over Time' }
             }
         }
     };
 
-    new Chart(document.getElementById('metricsChart'), config);
+    // Initialize the Chart
+    const ctx = document.getElementById('metricsChart').getContext('2d');
+    const chart = new Chart(ctx, config);
+
+    // Filter data based on selected range (to implement)
+    function filterData(range) {
+        console.log("Filter data by range:", range);
+        // Implement data filtering and update chart here
+    }
+
+    // Toggle chart type between 'line' and 'bar'
+    function toggleChartType() {
+        chart.config.type = chart.config.type === 'line' ? 'bar' : 'line';
+        chart.update();
+    }
 </script>
 {% endblock %}
