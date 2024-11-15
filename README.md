@@ -71,7 +71,7 @@ You can modify the data by replacing the labels and `data` values with actual me
 
 ### Prerequisites
 
-- **Python 3.10.14+**
+- **Python `3.10.14+`**
 - **PostgreSQL** installed and running
 
 ### Steps
@@ -129,10 +129,10 @@ You can modify the data by replacing the labels and `data` values with actual me
 ---
 ### Usage
 
-1. Register: Go to /register to create a new account.
-2. Login: Log in with your credentials at /login.
-3. Dashboard: View your logged health metrics and data visualization.
-4. Log Health Metrics: Add new entries for heart rate, blood pressure, and weight.
+1. **Register**: Go to /register to create a new account.
+2. **Login**: Log in with your credentials at /login.
+3. **Dashboard**: View your logged health metrics and data visualization.
+4. **Log Health Metrics**: Add new entries for heart rate, blood pressure, and weight.
 
 ---
 ### Screenshots
@@ -146,10 +146,10 @@ You can modify the data by replacing the labels and `data` values with actual me
 ---
 ### Future Enhancements
 
-- Advanced Analytics: Provide health insights based on logged metrics.
-- Additional Metrics: Support more health metrics, like body temperature or oxygen saturation.
-- Export Data: Allow users to export their data as CSV or PDF.
-- Notifications: Reminders for users to log metrics daily or weekly.
+- **Advanced Analytics**: Provide health insights based on logged metrics.
+- **Additional Metrics**: Support more health metrics, like body temperature or oxygen saturation.
+- **Export Data**: Allow users to export their data as CSV or PDF.
+- **Notifications**: Reminders for users to log metrics daily or weekly.
 
 ---
 ### Contributing
@@ -166,9 +166,3 @@ For any questions, feel free to reach out to the project maintainers.
 ### License
 
 This project is licensed under the MIT License. See the LICENSE file for more information.
-
----
-### Note
-
-- Environment Variables: Remember to keep your .env file secure and avoid committing it to version control.
-- Database Configuration: Make sure your PostgreSQL database is running and accessible for seamless operation.

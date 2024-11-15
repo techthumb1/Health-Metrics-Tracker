@@ -62,6 +62,28 @@ def about():
 def contact():
     return render_template('contact.html')
 
+@main.route('/results')
+def results():
+    # Assuming data is similar to the previous contact route
+    metrics = Metrics.query.filter_by(user_id=current_user.id).order_by(Metrics.date).all()
+    
+    metrics_data = [
+        (
+            metric.date.strftime("%Y-%m-%d"),
+            float(metric.heart_rate) if metric.heart_rate is not None else None,
+            metric.blood_pressure,
+            float(metric.weight) if metric.weight is not None else None
+        )
+        for metric in metrics
+    ]
+    return render_template('results.html', metrics_data=metrics_data)
+
+@main.route('/handle_results', methods=["POST"])
+def handle_results():
+    # Placeholder for handling form data on the results page
+    # Process form data here
+    return redirect(url_for('main.results'))
+
 def predict_next_value(data):
     if len(data) < 2:
         return None  # Not enough data for prediction

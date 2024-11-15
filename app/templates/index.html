@@ -3,19 +3,38 @@
 {% block title %}Home - Health Metrics Tracker{% endblock %}
 
 {% block content %}
-<div class="text-center">
-    <h1>Welcome to Health Metrics Tracker</h1>
+<!-- Hero Section -->
+<div class="text-center bg-light p-5 rounded-3 mb-5">
+    <h1 class="display-4">Welcome to Health Metrics Tracker</h1>
     <p class="lead">Track and manage your health metrics with ease.</p>
     <p>Our platform allows you to monitor vital health metrics over time and gain insights into your wellbeing.</p>
     <a href="{{ url_for('main.register') }}" class="btn btn-primary btn-lg mt-3">Get Started</a>
 </div>
 
+<!-- Features Section -->
 <section class="mt-5">
-    <h2>Features</h2>
-    <ul>
-        <li>Track your daily activities and health metrics</li>
-        <li>Monitor your diet and nutrition</li>
-        <li>Set and achieve fitness goals</li>
-    </ul>
+    <div class="container">
+        <h2 class="text-center mb-4">Our Features</h2>
+        <div class="row">
+            <!-- Feature 1 -->
+            <div class="col-md-4 text-center mb-4">
+                <i class="fas fa-heartbeat fa-3x text-primary mb-3"></i>
+                <h4>Track Health Metrics</h4>
+                <p>Monitor your daily health metrics, including heart rate, blood pressure, and more.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="col-md-4 text-center mb-4">
+                <i class="fas fa-utensils fa-3x text-success mb-3"></i>
+                <h4>Monitor Nutrition</h4>
+                <p>Keep an eye on your diet and ensure you meet your nutritional needs.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="col-md-4 text-center mb-4">
+                <i class="fas fa-chart-line fa-3x text-warning mb-3"></i>
+                <h4>Set Fitness Goals</h4>
+                <p>Set personalized fitness goals and track your progress over time.</p>
+            </div>
+        </div>
+    </div>
 </section>
 {% endblock %}

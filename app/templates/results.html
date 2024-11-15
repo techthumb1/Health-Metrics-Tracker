@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Results - Health Metrics Tracker{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Your Health Metrics Results</h2>
+
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs" id="metricsTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="heart-rate-tab" data-bs-toggle="tab" data-bs-target="#heart-rate" type="button" role="tab" aria-controls="heart-rate" aria-selected="true">Heart Rate</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="blood-pressure-tab" data-bs-toggle="tab" data-bs-target="#blood-pressure" type="button" role="tab" aria-controls="blood-pressure" aria-selected="false">Blood Pressure</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="weight-tab" data-bs-toggle="tab" data-bs-target="#weight" type="button" role="tab" aria-controls="weight" aria-selected="false">Weight</button>
+        </li>
+    </ul>
+
+    <!-- Tabs Content -->
+    <div class="tab-content mt-4" id="metricsTabContent">
+        <!-- Heart Rate Tab -->
+        <div class="tab-pane fade show active" id="heart-rate" role="tabpanel" aria-labelledby="heart-rate-tab">
+            <h4>Heart Rate Over Time</h4>
+            {% if metrics_data %}
+                <ul class="list-group">
+                {% for date, hr, _, _ in metrics_data %}
+                    <li class="list-group-item">
+                        <strong>Date:</strong> {{ date }} - <strong>Heart Rate:</strong> {{ hr }}
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No heart rate data available.</p>
+            {% endif %}
+        </div>
+
+        <!-- Blood Pressure Tab -->
+        <div class="tab-pane fade" id="blood-pressure" role="tabpanel" aria-labelledby="blood-pressure-tab">
+            <h4>Blood Pressure Over Time</h4>
+            {% if metrics_data %}
+                <ul class="list-group">
+                {% for date, _, bp, _ in metrics_data %}
+                    <li class="list-group-item">
+                        <strong>Date:</strong> {{ date }} - <strong>Blood Pressure:</strong> {{ bp }}
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No blood pressure data available.</p>
+            {% endif %}
+        </div>
+
+        <!-- Weight Tab -->
+        <div class="tab-pane fade" id="weight" role="tabpanel" aria-labelledby="weight-tab">
+            <h4>Weight Over Time</h4>
+            {% if metrics_data %}
+                <ul class="list-group">
+                {% for date, _, _, wt in metrics_data %}
+                    <li class="list-group-item">
+                        <strong>Date:</strong> {{ date }} - <strong>Weight:</strong> {{ wt }}
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No weight data available.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
