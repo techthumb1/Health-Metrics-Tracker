@@ -1,1 +1,12 @@
 .env
+
+# Ignore .DS_Store
+.DS_Store
+
+# Ignore __pycache__
+__pycache__/
+
+# Node modules
+backend/node_modules
+frontend/node_modules
+node_modules

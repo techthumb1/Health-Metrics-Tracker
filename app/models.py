@@ -3,6 +3,7 @@ from . import db  # Import db from app/__init__.py without circular import
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from sqlalchemy import Column, Integer, Float, String, DateTime
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -15,10 +16,16 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-class Metrics(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    heart_rate = db.Column(db.Integer, nullable=False)
-    blood_pressure = db.Column(db.String(10), nullable=False)
-    weight = db.Column(db.Float, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
+class HealthMetric(db.Model):
+    id = Column(Integer, primary_key=True)
+    date_logged = Column(DateTime, nullable=False)
+    heart_rate = Column(Float)
+    blood_pressure = Column(String)  # e.g., "120/80"
+    weight = Column(Float)
+    sleep_quality = Column(Integer)  # Scale: 1-10
+    hydration = Column(Float)  # Liters
+    activity_level = Column(Float)  # Steps or minutes of exercise
+    blood_glucose = Column(Float)  # mg/dL
+    oxygen_saturation = Column(Float)  # Percentage
+    cholesterol = Column(Float)  # mg/dL
+    
