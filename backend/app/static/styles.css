@@ -1,0 +1,90 @@
+/* styles.css */
+
+/* Basic styling for the body to ensure full height layout */
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Main content area that expands to push footer to the bottom */
+main {
+    flex-grow: 1;
+}
+
+/* Navigation bar styling for a professional look */
+.navbar {
+    border-bottom: 2px solid #ddd;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #f8f9fa !important;
+}
+
+.navbar-nav .nav-link {
+    font-size: 1rem;
+    color: #f8f9fa;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ccc;
+}
+
+/* Flash message container for notifications */
+.alert-container {
+    max-width: 600px;
+    margin: auto;
+}
+
+/* Footer styling with border to differentiate from content */
+footer {
+    background-color: #343a40;
+    color: #f8f9fa;
+    padding: 1rem;
+    text-align: center;
+    width: 100%;
+    border-top: 2px solid #ddd;
+    position: relative;
+    bottom: 0;
+}
+
+/* General content and heading styling */
+h1, h2 {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Input form styling for a clean, user-friendly appearance */
+form input,
+form select,
+form button {
+    margin-top: 0.5rem;
+}
+
+form .input-group {
+    display: flex;
+    align-items: center;
+}
+
+form .input-group .form-control {
+    flex: 1;
+}
+
+form .form-control,
+form .form-select,
+form .btn {
+    border-radius: 0.25rem;
+}
+
+/* Button styling for consistency */
+.btn-primary, .btn-success {
+    font-weight: 600;
+    padding: 0.75rem;
+}
+

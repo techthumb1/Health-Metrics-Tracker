@@ -1,18 +1,27 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
 
 const Metric = sequelize.define('Metric', {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  heartRate: DataTypes.FLOAT,
-  systolic: DataTypes.FLOAT,
-  diastolic: DataTypes.FLOAT,
-  weight: DataTypes.FLOAT,
-  rbc: DataTypes.FLOAT,
-  wbc: DataTypes.FLOAT,
-  hemoglobin: DataTypes.FLOAT,
+  heartRate: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  weight: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  systolic: {
+    type: DataTypes.FLOAT,
+    allowNull: true,
+  },
+  diastolic: {
+    type: DataTypes.FLOAT,
+    allowNull: true,
+  },
 });
 
-module.exports = Metric;
+export default Metric;

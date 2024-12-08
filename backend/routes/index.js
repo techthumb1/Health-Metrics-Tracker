@@ -1,12 +1,16 @@
-const express = require('express');
+import express from 'express';
+import { register, login } from '../controllers/authController.js';
+import { addMetric, getMetrics } from '../controllers/metricController.js';
+import authMiddleware from '../middleware/authMiddleware.js';
+
 const router = express.Router();
-const authController = require('../controllers/authController');
-const metricController = require('../controllers/metricController');
-const authMiddleware = require('../middleware/authMiddleware');
 
-router.post('/register', authController.register);
-router.post('/login', authController.login);
-router.post('/metrics', authMiddleware, metricController.addMetric);
-router.get('/metrics', authMiddleware, metricController.getMetrics);
+// Auth routes
+router.post('/register', register);
+router.post('/login', login);
 
-module.exports = router;
+// Metric routes
+router.post('/metrics', authMiddleware, addMetric);
+router.get('/metrics', authMiddleware, getMetrics);
+
+export default router; // Use ES module syntax for export

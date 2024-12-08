@@ -1,15 +1,16 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const sequelize = require('./config/database');
-const routes = require('./routes');
+import sequelize from './config/database.js'; // Import Sequelize instance
+import User from './models/User.js'; // Import User model
 
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+sequelize.authenticate() // Optional for testing connection
+  .then(() => console.log('Database connected successfully'))
+  .catch(err => console.error('Database connection error:', err));
 
-app.use('/api', routes);
+sequelize.sync({ alter: true }) // Synchronize database
+  .then(() => {
+    console.log('Database synchronized successfully');
+  })
+  .catch(err => {
+    console.error('Database synchronization failed:', err);
+  });
 
-sequelize.sync().then(() => {
-  app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`));
-});
+  console.log('User model:', User);
