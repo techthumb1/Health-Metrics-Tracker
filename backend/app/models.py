@@ -1,5 +1,5 @@
 # app/models.py
-from . import db  # Import db from app/__init__.py without circular import
+from . import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
@@ -18,7 +18,7 @@ class User(db.Model, UserMixin):
 
 class Metrics(db.Model):
     id = Column(Integer, primary_key=True)
-    date_logged = Column(DateTime, nullable=False)
+    date_logged = Column(DateTime, default=datetime.utcnow)
     heart_rate = Column(Float)
     blood_pressure = Column(String)  # e.g., "120/80"
     weight = Column(Float)

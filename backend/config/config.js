@@ -1,5 +1,5 @@
-import dotenv from 'dotenv'; // Import dotenv for environment variables
-dotenv.config(); // Load environment variables from .env
+import dotenv from 'dotenv';
+dotenv.config();
 
 const config = {
   development: {
@@ -7,8 +7,8 @@ const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 5432, // Default port for PostgreSQL
-    dialect: 'postgres', // Explicitly define the dialect
+    port: process.env.DB_PORT || 5432,
+    dialect: 'postgres',
   },
   test: {
     username: process.env.DB_USER,

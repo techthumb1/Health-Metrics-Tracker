@@ -17,7 +17,7 @@ const LogMetrics = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/metrics', formData);
+      await axios.post('http://localhost:5000/api/metrics', formData); // Removed response variable
       alert('Metrics logged successfully!');
       setFormData({ heartRate: '', weight: '', systolic: '', diastolic: '' });
     } catch (error) {
