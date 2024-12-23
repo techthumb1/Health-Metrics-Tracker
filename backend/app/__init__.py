@@ -24,6 +24,16 @@ def create_app():
     login_manager.init_app(app)
     migrate.init_app(app, db)
 
+    # Import models within app context to avoid circular imports
+    with app.app_context():
+        from .models import User  # Import models here
+        db.create_all()  # Ensure all tables are created
+
+    # Set up the user loader for Flask-Login
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
     # Register blueprints
     from .views import main
     app.register_blueprint(main)

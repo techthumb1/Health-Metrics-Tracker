@@ -1,0 +1,49 @@
+.
+├── LICENSE
+├── Pipfile
+├── Pipfile.lock
+├── README.md
+├── __pycache__
+│   └── run.cpython-310.pyc
+├── backend
+│   ├── Dockerfile
+│   ├── app
+│   ├── config
+│   ├── controllers
+│   ├── docker_compose.yaml
+│   ├── middleware
+│   ├── migrations
+│   ├── models
+│   ├── node_modules
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── routes
+│   ├── seeders
+│   └── server.js
+├── eslint.config.mjs
+├── frontend
+│   ├── README.md
+│   ├── components
+│   ├── next-env.d.ts
+│   ├── next.config.mjs
+│   ├── node_modules
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.mjs
+│   ├── public
+│   ├── src
+│   ├── tailwind.config.ts
+│   └── tsconfig.json
+├── migrations
+│   ├── README
+│   ├── __pycache__
+│   ├── alembic.ini
+│   ├── env.py
+│   ├── script.py.mako
+│   └── versions
+├── project_structure.txt
+├── run.py
+├── structure.txt
+└── update_readme.py
+
+20 directories, 27 files
