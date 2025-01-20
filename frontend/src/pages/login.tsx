@@ -14,7 +14,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/login', formData);
+      const response = await axios.post('http://localhost:5001/api/login', formData);
       localStorage.setItem('token', response.data.token);
       alert('Login successful!');
       router.push('/dashboard');

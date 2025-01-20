@@ -4,6 +4,12 @@ from .models import db, User, Metrics
 from datetime import datetime
 from sklearn.linear_model import LinearRegression
 import numpy as np
+from flask import render_template, jsonify
+from flask_login import login_required, current_user
+from datetime import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Blueprint and login manager initialization
 main = Blueprint('main', __name__)
@@ -41,6 +47,13 @@ def register():
 
     return render_template('register.html')
 
+@main.route('/health', methods=['GET'])
+def health():
+    """
+    Simple health check endpoint.
+    Returns 200 OK if the server is up.
+    """
+    return jsonify({"status": "ok"}), 200
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
@@ -65,9 +78,35 @@ def logout():
 def about():
     return render_template('about.html')
 
-@main.route('/contact')
+# In views/main.py or wherever your routes are defined
+
+from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
+
+@main.route('/contact', methods=['GET'])
 def contact():
+    """Render the contact form page"""
     return render_template('contact.html')
+
+@main.route('/handle_contact', methods=['POST'])
+def handle_contact():
+    """Handle the contact form submission"""
+    try:
+        # Get form data
+        name = request.form.get('name')
+        email = request.form.get('email')
+        message = request.form.get('message')
+        
+        # Add your contact form processing logic here
+        # For example, sending email, saving to database, etc.
+        
+        # Flash success message
+        flash('Thank you for your message! We will get back to you soon.', 'success')
+        return redirect(url_for('main.contact'))
+        
+    except Exception as e:
+        print(f"Contact form error: {str(e)}")
+        flash('Sorry, there was an error processing your message.', 'error')
+        return redirect(url_for('main.contact'))
 
 @main.route('/results')
 @login_required
@@ -99,32 +138,93 @@ def process_metric(metric, metric_name):
         return prediction
     return None
 
+def safe_split_bp(bp_value):
+    """Safely split blood pressure values"""
+    try:
+        if bp_value and '/' in str(bp_value):
+            systolic, diastolic = str(bp_value).split('/')
+            return int(systolic), int(diastolic)
+        return None, None
+    except (ValueError, AttributeError) as e:
+        logger.error(f"Error processing blood pressure value: {bp_value}, Error: {str(e)}")
+        return None, None
+
+def safe_process_metric(metrics, metric_type):
+    """Safely process metrics and handle missing values"""
+    if not metrics:
+        return []
+    try:
+        # Remove None values and convert to appropriate type
+        return [float(m) for m in metrics if m is not None]
+    except (ValueError, TypeError) as e:
+        logger.error(f"Error processing {metric_type}: {str(e)}")
+        return []
+
 @main.route('/dashboard')
 @login_required
 def dashboard():
-    metrics = Metrics.query.filter_by(user_id=current_user.id).order_by(Metrics.date).all()
-
-    # Extract metrics
-    metric_dict = {
-        'dates': [metric.date.strftime("%Y-%m-%d") for metric in metrics],
-        'heart_rate': [metric.heart_rate for metric in metrics],
-        'systolic': [int(bp.split('/')[0]) for bp in metrics if bp.blood_pressure],
-        'diastolic': [int(bp.split('/')[1]) for bp in metrics if bp.blood_pressure],
-        'weight': [metric.weight for metric in metrics]
-    }
-
-    # Generate predictions
-    predictions = {key: process_metric(metric_dict[key], key) for key in metric_dict if key != 'dates'}
-    if predictions['heart_rate']:
-        metric_dict['dates'].append('Prediction')
-
-    return render_template(
-        'dashboard.html',
-        metrics=metric_dict,
-        predictions=predictions,
-        current_year=datetime.now().year
-    )
-
+    try:
+        # Query metrics
+        metrics = Metrics.query.filter_by(user_id=current_user.id).order_by(Metrics.date).all()
+        
+        # Initialize metric dictionary
+        metrics_data = {
+            'dates': [],
+            'heart_rate': [],
+            'systolic': [],
+            'diastolic': [],
+            'weight': []
+        }
+        
+        # Process metrics
+        for metric in metrics:
+            if metric.date:
+                metrics_data['dates'].append(metric.date.strftime("%Y-%m-%d"))
+            
+            metrics_data['heart_rate'].append(metric.heart_rate if hasattr(metric, 'heart_rate') else None)
+            
+            if hasattr(metric, 'blood_pressure') and metric.blood_pressure:
+                try:
+                    sys, dia = metric.blood_pressure.split('/')
+                    metrics_data['systolic'].append(float(sys))
+                    metrics_data['diastolic'].append(float(dia))
+                except (ValueError, AttributeError):
+                    metrics_data['systolic'].append(None)
+                    metrics_data['diastolic'].append(None)
+            
+            metrics_data['weight'].append(metric.weight if hasattr(metric, 'weight') else None)
+        
+        # Clean None values
+        for key in metrics_data:
+            if key != 'dates':
+                metrics_data[key] = [x for x in metrics_data[key] if x is not None]
+        
+        # Generate predictions
+        predictions = {}
+        for key in metrics_data:
+            if key != 'dates' and metrics_data[key]:
+                try:
+                    pred = process_metric(metrics_data[key], key)
+                    predictions[key] = [pred] if pred is not None else []
+                except Exception as e:
+                    print(f"Prediction error for {key}: {str(e)}")
+                    predictions[key] = []
+        
+        return render_template(
+            'dashboard.html',
+            metrics=metrics_data,
+            predictions=predictions,
+            current_year=datetime.now().year
+        )
+        
+    except Exception as e:
+        print(f"Dashboard error: {str(e)}")
+        return render_template(
+            'error.html',
+            error="Unable to load dashboard data. Please try again later.",
+            current_year=datetime.now().year
+        )
+    
 @main.route('/log_metrics', methods=['GET', 'POST'])
 @login_required
 def log_metrics():

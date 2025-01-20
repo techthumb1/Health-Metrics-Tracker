@@ -5,35 +5,116 @@
 {% block content %}
 <div class="container mt-5">
     <h2 class="text-center mb-4">Contact Us</h2>
-    <p class="text-center lead">Have questions or need support? Get in touch with us, and we’ll be happy to assist you!</p>
+    <p class="text-center lead">
+        Have questions or need support? Get in touch with us, and we’ll be happy to assist you!
+    </p>
 
-    <!-- Contact Form -->
-    <form action="{{ url_for('main.handle_results') }}" method="POST" class="mt-4">
-        <div class="mb-3">
-            <label for="name" class="form-label">Your Name</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Your Email</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
-        </div>
-        <div class="mb-3">
-            <label for="subject" class="form-label">Subject</label>
-            <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject of your message" required>
-        </div>
-        <div class="mb-3">
-            <label for="message" class="form-label">Message</label>
-            <textarea class="form-control" id="message" name="message" rows="4" placeholder="Write your message here..." required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Send Message</button>
-    </form>
+    {# Flash Messages (from second file) #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-    <!-- Contact Information -->
-    <div class="mt-5 text-center">
-        <h5>Contact Information</h5>
-        <p>Email: support@healthmetricstracker.com</p>
-        <p>Phone: (123) 456-7890</p>
-        <p>Address: 123 Health Lane, Wellness City, USA</p>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {# Combined Form (name, email, subject, message) with validation #}
+            <form method="POST" action="{{ url_for('main.handle_contact') }}" 
+                  class="needs-validation mt-4" 
+                  novalidate>
+                <!-- Name Field -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">Your Name</label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="name" 
+                           name="name" 
+                           placeholder="Enter your name" 
+                           required>
+                    <div class="invalid-feedback">
+                        Please provide your name.
+                    </div>
+                </div>
+
+                <!-- Email Field -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Your Email</label>
+                    <input type="email" 
+                           class="form-control" 
+                           id="email" 
+                           name="email" 
+                           placeholder="Enter your email" 
+                           required>
+                    <div class="invalid-feedback">
+                        Please provide a valid email address.
+                    </div>
+                </div>
+
+                <!-- Subject Field (from first file) -->
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Subject</label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="subject" 
+                           name="subject" 
+                           placeholder="Subject of your message" 
+                           required>
+                    <div class="invalid-feedback">
+                        Please provide a subject.
+                    </div>
+                </div>
+
+                <!-- Message Field -->
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" 
+                              id="message" 
+                              name="message" 
+                              rows="4" 
+                              placeholder="Write your message here..." 
+                              required></textarea>
+                    <div class="invalid-feedback">
+                        Please provide a message.
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </div>
+            </form>
+
+            <!-- Contact Information (from first file) -->
+            <div class="mt-5 text-center">
+                <h5>Contact Information</h5>
+                <p>Email: support@healthmetricstracker.com</p>
+                <p>Phone: (123) 456-7890</p>
+                <p>Address: 123 Health Lane, Wellness City, USA</p>
+            </div>
+        </div>
     </div>
 </div>
+
+{# Client-side validation script (from second file) #}
+<script>
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+})();
+</script>
 {% endblock %}

@@ -1,21 +1,65 @@
 version: '3.8'
+
 services:
-  backend:
+  # Flask service
+  flask-backend:
     build:
-      context: ./backend
+      context: .
+      dockerfile: Dockerfile.flask  # Or wherever your Flask Dockerfile resides
     ports:
       - "5000:5000"
     env_file:
-      - ./backend/.env
+      - ./backend/.env  # Or wherever your Flask env is stored
+    networks:
+      - app_network
     depends_on:
-      - db
+      db:
+        condition: service_healthy  # Wait for the db to be healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Node.js service
+  node-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile  # Or Dockerfile.node if separate
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./backend/.env
+    networks:
+      - app_network
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend service (e.g., Next.js)
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile  # Or Dockerfile.frontend if separate
     ports:
       - "3000:3000"
+    networks:
+      - app_network
     depends_on:
-      - backend
+      flask-backend:
+        condition: service_healthy
+      node-backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Postgres DB
   db:
     image: postgres:16
     environment:
@@ -24,8 +68,20 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    networks:
+      - app_network
     volumes:
       - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  app_network:
+    driver: bridge
 
 volumes:
   db_data:

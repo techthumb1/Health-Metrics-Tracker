@@ -53,8 +53,6 @@
 | Last Commit         | ![Last Commit](https://img.shields.io/github/last-commit/techthumb1/Health-Metrics-Tracker/ci.yml)      |
 | Open Issues         | ![Issues](https://img.shields.io/github/issues/techthumb1/Health-Metrics-Tracker/ci.yml)                |
 | License             | ![License](https://img.shields.io/github/license/techthumb1/Health-Metrics-Tracker/ci.yml)              |
-
-
 ---
 
 ## Dynamic Charts
@@ -166,3 +164,12 @@ For any questions, feel free to reach out to the project maintainers.
 ### License
 
 This project is licensed under the MIT License. See the LICENSE file for more information.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+---
+
+**Health Metrics Tracker** is a project by [Jason Robinson](jasonrobinson-ds.com). 
+
+For more projects, visit [TechThumb](
+https://techthumb1.github.io/).

@@ -28,6 +28,6 @@ print("DB_NAME:", os.getenv("DB_NAME"))
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
-        port=int(os.getenv("PORT", 5000)),
+        port=int(os.getenv("PORT", 5002)),
         debug=os.getenv("FLASK_DEBUG", "True").lower() in ["true", "1", "yes"]
     )

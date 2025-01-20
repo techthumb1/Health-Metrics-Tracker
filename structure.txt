@@ -662,7 +662,7 @@
 │   │   ├── wrappy
 │   │   ├── yaml
 │   │   └── yocto-queue
-│   ├── package-lock.json
+│  ├── package-lock.json
 │   ├── package.json
 │   ├── postcss.config.mjs
 │   ├── public
@@ -670,7 +670,7 @@
 │   │   ├── file.svg
 │   │   ├── globe.svg
 │   │   ├── next.svg
-│   │   ├── vercel.svg
+│   │   ├── vercel.svg 
 │   │   └── window.svg
 │   ├── src
 │   │   ├── pages

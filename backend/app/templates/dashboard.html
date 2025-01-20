@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-
 {% block title %}Dashboard - Health Metrics Tracker{% endblock %}
 
 {% block content %}
 <h2 class="text-center mb-4">My Health Metrics</h2>
 
+<!-- Filter & Toggle Buttons -->
 <div class="text-center mb-3">
     <div class="btn-group">
         <button onclick="filterData('week')" class="btn btn-outline-primary">Last Week</button>
@@ -20,81 +20,154 @@
 </div>
 
 <script>
-    // Load data from Flask as JSON strings and parse into JavaScript objects
-    const labels = JSON.parse('{{ metrics_dates | tojson | safe }}');
-    const heartRateData = JSON.parse('{{ heart_rates | tojson | safe }}');
-    const systolicData = JSON.parse('{{ systolic_data | tojson | safe }}');
-    const diastolicData = JSON.parse('{{ diastolic_data | tojson | safe }}');
-    const weightData = JSON.parse('{{ weights | tojson | safe }}');
+// Wrap everything in an IIFE to avoid polluting the global scope.
+(() => {
+  // 1) Inject raw JSON strings from Jinja
+  const rawMetrics = `{{ metrics|tojson|safe }}`;
+  const rawPredictions = `{{ predictions|tojson|safe }}`;
 
-    console.log('Labels:', labels);
-    console.log('Heart Rate Data:', heartRateData);
-    console.log('Systolic Data:', systolicData);
-    console.log('Diastolic Data:', diastolicData);
-    console.log('Weight Data:', weightData);
+  let metricsData = {};
+  let predictionsData = {};
 
-    // Configure chart data and settings
-    const data = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Heart Rate',
-                data: heartRateData,
-                borderColor: 'rgba(255, 99, 132, 0.8)',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                fill: true
-            },
-            {
-                label: 'Systolic Pressure',
-                data: systolicData,
-                borderColor: 'rgba(54, 162, 235, 0.8)',
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                fill: true
-            },
-            {
-                label: 'Diastolic Pressure',
-                data: diastolicData,
-                borderColor: 'rgba(75, 0, 130, 0.8)',
-                backgroundColor: 'rgba(75, 0, 130, 0.2)',
-                fill: true
-            },
-            {
-                label: 'Weight',
-                data: weightData,
-                borderColor: 'rgba(75, 192, 192, 0.8)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                fill: true
-            }
-        ]
-    };
+  // 2) Safely parse the JSON in a try/catch
+  try {
+    // The Jinja filters produce valid JSON (e.g. {"dates": [...], "heart_rate": [...]})
+    metricsData = JSON.parse(rawMetrics) || {};
+    predictionsData = JSON.parse(rawPredictions) || {};
+  } catch (err) {
+    console.error("Error parsing data:", err);
+    // Fallbacks to empty arrays in case of parse error
+    metricsData = { dates: [], heart_rate: [], systolic: [], diastolic: [], weight: [] };
+    predictionsData = { heart_rate: [], systolic: [], diastolic: [], weight: [] };
+  }
 
-    // Chart configuration
-    const config = {
-        type: 'line',
-        data: data,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: 'top' },
-                title: { display: true, text: 'Health Metrics Over Time' }
-            }
+  // 3) Extract arrays for the chart
+  const labels = metricsData.dates || [];
+  const heartRateData = metricsData.heart_rate || [];
+  const systolicData = metricsData.systolic || [];
+  const diastolicData = metricsData.diastolic || [];
+  const weightData = metricsData.weight || [];
+
+  // Debug logs (optional)
+  console.log("Metrics Data:", metricsData);
+  console.log("Predictions Data:", predictionsData);
+
+  // 4) Chart.js configuration
+  const dataConfig = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Heart Rate",
+        data: heartRateData,
+        borderColor: "rgba(255, 99, 132, 0.8)",
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        fill: true
+      },
+      {
+        label: "Systolic Pressure",
+        data: systolicData,
+        borderColor: "rgba(54, 162, 235, 0.8)",
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        fill: true
+      },
+      {
+        label: "Diastolic Pressure",
+        data: diastolicData,
+        borderColor: "rgba(75, 0, 130, 0.8)",
+        backgroundColor: "rgba(75, 0, 130, 0.2)",
+        fill: true
+      },
+      {
+        label: "Weight",
+        data: weightData,
+        borderColor: "rgba(75, 192, 192, 0.8)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        fill: true
+      }
+    ]
+  };
+
+  const chartConfig = {
+    type: "line",
+    data: dataConfig,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "top" },
+        title: {
+          display: true,
+          text: "Health Metrics Over Time"
         }
-    };
+      },
+      scales: {
+        y: {
+          beginAtZero: false,
+          ticks: {
+            callback: function (value) {
+              return value.toFixed(1);
+            }
+          }
+        }
+      }
+    }
+  };
 
-    // Initialize the Chart
-    const ctx = document.getElementById('metricsChart').getContext('2d');
-    const chart = new Chart(ctx, config);
+  // 5) Initialize the chart
+  const ctx = document.getElementById("metricsChart").getContext("2d");
+  const chart = new Chart(ctx, chartConfig);
 
-    // Filter data based on selected range (to implement)
-    function filterData(range) {
-        console.log("Filter data by range:", range);
-        // Implement data filtering and update chart here
+  // 6) Filter data by time range
+  window.filterData = function (range) {
+    const now = new Date();
+    let cutoffDate;
+
+    switch (range) {
+      case "week":
+        cutoffDate = new Date(now.setDate(now.getDate() - 7));
+        break;
+      case "month":
+        cutoffDate = new Date(now.setMonth(now.getMonth() - 1));
+        break;
+      default:
+        // For 'all', restore the entire dataset
+        updateChartData(
+          metricsData.dates,
+          metricsData.heart_rate,
+          metricsData.systolic,
+          metricsData.diastolic,
+          metricsData.weight
+        );
+        return;
     }
 
-    // Toggle chart type between 'line' and 'bar'
-    function toggleChartType() {
-        chart.config.type = chart.config.type === 'line' ? 'bar' : 'line';
-        chart.update();
-    }
+    const filteredIndices = labels
+      .map((date, idx) => (new Date(date) >= cutoffDate ? idx : null))
+      .filter((index) => index !== null);
+
+    updateChartData(
+      filteredIndices.map((i) => labels[i]),
+      filteredIndices.map((i) => heartRateData[i]),
+      filteredIndices.map((i) => systolicData[i]),
+      filteredIndices.map((i) => diastolicData[i]),
+      filteredIndices.map((i) => weightData[i])
+    );
+  };
+
+  // 7) Update chart helper
+  function updateChartData(newLabels, newHeartRate, newSystolic, newDiastolic, newWeight) {
+    chart.data.labels = newLabels;
+    chart.data.datasets[0].data = newHeartRate;
+    chart.data.datasets[1].data = newSystolic;
+    chart.data.datasets[2].data = newDiastolic;
+    chart.data.datasets[3].data = newWeight;
+    chart.update();
+  }
+
+  // 8) Toggle chart type (line <-> bar)
+  window.toggleChartType = function () {
+    chart.config.type = chart.config.type === "line" ? "bar" : "line";
+    chart.update();
+  };
+})();
 </script>
 {% endblock %}
